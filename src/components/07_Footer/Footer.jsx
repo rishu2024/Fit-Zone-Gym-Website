@@ -1,107 +1,149 @@
+import { useState } from "react";
+import Toast from "../09_Toast/Toast";
+
 function Footer() {
-  const goToSection = (id) => {
-    const section = document.getElementById(id);
-    if (!section) return;
+  const [email, setEmail] = useState("");
+  const [toast, setToast] = useState({
+    show: false,
+    type: "success",
+    message: "",
+  });
 
-    const top =
-      section.getBoundingClientRect().top +
-      window.pageYOffset -
-      80;
+  // ✅ Email validation regex
+  const validateEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
 
-    window.scrollTo({
-      top,
-      behavior: "smooth",
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // ❌ Empty check
+    if (!email.trim()) {
+      setToast({
+        show: true,
+        type: "error",
+        message: "Please enter your email",
+      });
+      return;
+    }
+
+    // ❌ Invalid email
+    if (!validateEmail(email)) {
+      setToast({
+        show: true,
+        type: "error",
+        message: "Please enter a valid email",
+      });
+      return;
+    }
+
+    // ✅ Success
+    console.log("Subscribed:", email);
+
+    setToast({
+      show: true,
+      type: "success",
+      message: "Subscribed successfully 🎉",
     });
+
+    setEmail("");
+
+    // auto close toast
+    setTimeout(() => {
+      setToast((prev) => ({ ...prev, show: false }));
+    }, 3000);
   };
 
   return (
-    <footer
-      id="footer"
-      className="bg-gradient-to-b from-black via-gray-900 to-black text-white pt-16 pb-8 px-6"
-    >
-      <div className="max-w-7xl mx-auto">
+    <>
+      {/* 🔥 Toast */}
+      <Toast
+        show={toast.show}
+        type={toast.type}
+        message={toast.message}
+        onClose={() => setToast((prev) => ({ ...prev, show: false }))}
+      />
 
-        {/* Top Section */}
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+      <footer className="bg-black text-white py-16 px-6 md:px-20">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-10">
 
-          {/* Logo + About */}
+          {/* Brand */}
           <div>
-            <h2 className="text-2xl font-bold text-red-500">FitZone Gym</h2>
-            <p className="text-gray-400 mt-3 text-sm">
-              Transform your body with expert guidance, modern equipment,
-              and a motivating environment.
+            <h2 className="text-2xl font-bold text-red-500">
+              FitZone Gym
+            </h2>
+            <p className="text-gray-400 mt-4 text-sm">
+              Transform your body with expert guidance,
+              modern equipment, and a motivating environment.
             </p>
           </div>
 
-          {/* Quick Links */}
+          {/* Links */}
           <div>
-            <h3 className="text-lg font-semibold">Quick Links</h3>
-
-            <ul className="mt-4 space-y-2 text-sm text-gray-400">
-              {[
-                { id: "home", label: "Home" },
-                { id: "services", label: "Programs" },
-                { id: "pricing", label: "Pricing" },
-                { id: "footer", label: "About" },
-              ].map((item, i) => (
-                <li
-                  key={i}
-                  onClick={() => goToSection(item.id)}
-                  className="cursor-pointer transition duration-300 hover:text-red-400 hover:translate-x-1"
-                >
-                  {item.label}
-                </li>
-              ))}
+            <h3 className="font-semibold mb-4">Quick Links</h3>
+            <ul className="space-y-2 text-gray-400 text-sm">
+              <li>Home</li>
+              <li>Programs</li>
+              <li>Pricing</li>
+              <li>About</li>
             </ul>
           </div>
 
-          {/* Opening Hours */}
+          {/* Hours */}
           <div>
-            <h3 className="text-lg font-semibold">Opening Hours</h3>
-
-            <ul className="mt-4 space-y-2 text-sm text-gray-400">
-              <li>Mon - Sat : 6 AM – 10 PM</li>
-              <li>Sunday : Closed </li>
-            </ul>
+            <h3 className="font-semibold mb-4">Opening Hours</h3>
+            <p className="text-gray-400 text-sm">
+              Mon – Sat : 6 AM – 10 PM
+            </p>
+            <p className="text-gray-400 text-sm mt-2">
+              Sunday : Closed
+            </p>
           </div>
 
-          {/* Newsletter / Contact */}
+          {/* Subscribe */}
           <div>
-            <h3 className="text-lg font-semibold">Stay Updated</h3>
-
-            <p className="text-gray-400 text-sm mt-3">
+            <h3 className="font-semibold mb-4">Stay Updated</h3>
+            <p className="text-gray-400 text-sm mb-4">
               Get fitness tips and updates directly in your inbox.
             </p>
 
-            {/* Input */}
-            <div className="mt-4 flex">
+            {/* Form */}
+            <form
+              onSubmit={handleSubmit}
+              className="flex items-center bg-white/5 border border-white/10 rounded-lg overflow-hidden"
+            >
               <input
-                type="email"
+                type="text"
                 placeholder="Enter email"
-                className="w-full px-3 py-2 bg-gray-800 text-sm outline-none rounded-l-md"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="flex-1 px-4 py-2 bg-transparent outline-none text-sm text-white placeholder-gray-500"
               />
-              <button className="bg-red-600 px-4 rounded-r-md hover:bg-red-700 transition">
+
+              <button
+                type="submit"
+                className="px-4 py-2 bg-gradient-to-r from-red-500 to-orange-500 hover:opacity-90 transition"
+              >
                 →
               </button>
-            </div>
+            </form>
 
             {/* Social */}
             <div className="flex gap-4 mt-4 text-gray-400 text-sm">
-              <span className="cursor-pointer hover:text-red-400 transition">Instagram</span>
-              <span className="cursor-pointer hover:text-red-400 transition">Facebook</span>
-              <span className="cursor-pointer hover:text-red-400 transition">YouTube</span>
+              <span>Instagram</span>
+              <span>Facebook</span>
+              <span>YouTube</span>
             </div>
           </div>
 
         </div>
 
-        {/* Divider */}
-        <div className="border-t border-gray-800 mt-12 pt-6 text-center text-sm text-gray-500">
-          © {new Date().getFullYear()} FitZone Gym. All rights reserved.
+        {/* Bottom */}
+        <div className="text-center text-gray-500 text-sm mt-12 border-t border-white/10 pt-6">
+          © 2026 FitZone Gym. All rights reserved.
         </div>
-
-      </div>
-    </footer>
+      </footer>
+    </>
   );
 }
 

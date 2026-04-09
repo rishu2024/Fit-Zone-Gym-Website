@@ -1,106 +1,195 @@
-function Pricing() {
-  const plans = [
-    {
-      name: "Monthly",
-      price: "₹999",
-      duration: "1 Month",
-      features: [
-        "Gym Access",
-        "Locker Facility",
-        "Free WiFi",
-        "1 Personal Training",
-      ],
-    },
-    {
-      name: "3 Months",
-      price: "₹2499",
-      duration: "3 Months",
-      features: [
-        "Gym Access",
-        "Locker Facility",
-        "Free WiFi",
-        "3 Personal Training",
-      ],
-      popular: true,
-    },
-    {
-      name: "6 Months",
-      price: "₹4499",
-      duration: "6 Months",
-      features: [
-        "Gym Access",
-        "Locker Facility",
-        "Free WiFi",
-        "6 Personal Training",
-      ],
-    },
-  ];
+import { useState } from "react";
+import Joinclick from "../08_Joinclick/Joinclick";
+
+function Pricing({ selectedPlan }) {
+  const [duration, setDuration] = useState("monthly");
+  const [joinOpen, setJoinOpen] = useState(false);
+
+  const plans = {
+    monthly: [
+      { name: "Basic", price: 799 },
+      { name: "Standard", price: 1299 },
+      { name: "Premium", price: 1799 },
+    ],
+    quarterly: [
+      { name: "Basic", price: 1999 },
+      { name: "Standard", price: 3499 },
+      { name: "Premium", price: 4999 },
+    ],
+    halfyearly: [
+      { name: "Basic", price: 3499 },
+      { name: "Standard", price: 5999 },
+      { name: "Premium", price: 8499 },
+    ],
+    yearly: [
+      { name: "Basic", price: 5999 },
+      { name: "Standard", price: 9999 },
+      { name: "Premium", price: 13999 },
+    ],
+  };
+
+  const features = {
+    Basic: [
+      "Strength Training Access",
+      "Gym Equipment Access",
+      "Locker Facility",
+    ],
+    Standard: [
+      "Strength Training",
+      "Cardio Fitness",
+      "Trainer Guidance",
+      "Diet Plan",
+    ],
+    Premium: [
+      "Strength Training",
+      "Cardio Fitness",
+      "Yoga & Flexibility",
+      "Personal Trainer",
+      "Priority Support",
+    ],
+  };
+
+  const durationLabel = {
+    monthly: "1 Month",
+    quarterly: "3 Months",
+    halfyearly: "6 Months",
+    yearly: "12 Months",
+  };
+
+  const savings = {
+    monthly: "",
+    quarterly: "Save 10%",
+    halfyearly: "Save 25%",
+    yearly: "Save 40%",
+  };
+
+  const currentPlans = plans[duration];
 
   return (
-    <section
-      id="pricing"
-      className="bg-gradient-to-b from-black via-gray-900 to-black text-white py-20 px-6"
-    >
-      <div className="max-w-6xl mx-auto">
+    <>
+      <section
+        id="pricing"
+        className="bg-gradient-to-b from-black via-gray-900 to-black text-white py-24 px-6 md:px-20"
+      >
+        <div className="max-w-6xl mx-auto">
 
-        {/* Heading */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-5xl font-bold">
-            Membership <span className="text-red-500">Plans</span>
-          </h2>
-          <p className="text-gray-400 mt-3">
-            Choose a plan that fits your fitness journey
-          </p>
-        </div>
+          {/* Heading */}
+          <div className="text-center mb-14">
+            <h2 className="text-3xl md:text-5xl font-bold">
+              Flexible <span className="text-red-500">Pricing</span>
+            </h2>
+            <p className="text-gray-400 mt-4">
+              Choose the plan that matches your fitness level
+            </p>
+          </div>
 
-        {/* Cards */}
-        <div className="grid gap-8 md:grid-cols-3">
-
-          {plans.map((plan, index) => (
-            <div
-              key={index}
-              className={`relative bg-gray-900/80 backdrop-blur-sm p-6 rounded-xl border border-gray-800 
-              transition duration-300 hover:scale-105 hover:border-red-500/40 group ${
-                plan.popular ? "border-red-500/40" : ""
-              }`}
-            >
-              {/* Popular Tag */}
-              {plan.popular && (
-                <span className="absolute top-4 right-4 text-xs bg-red-600 px-2 py-1 rounded">
-                  Popular
-                </span>
-              )}
-
-              {/* Plan Name */}
-              <h3 className="text-lg font-semibold group-hover:text-red-400 transition">
-                {plan.name}
-              </h3>
-
-              {/* Underline */}
-              <span className="block h-[2px] bg-red-500 w-0 group-hover:w-12 transition-all duration-300 mt-2"></span>
-
-              {/* Price */}
-              <p className="text-3xl font-bold mt-4">{plan.price}</p>
-              <p className="text-gray-400 mb-4">{plan.duration}</p>
-
-              {/* Features */}
-              <ul className="space-y-2 text-sm text-gray-300">
-                {plan.features.map((f, i) => (
-                  <li key={i}>✓ {f}</li>
-                ))}
-              </ul>
-
-              {/* Button */}
-              <button className="mt-6 w-full px-6 py-2 bg-red-600 rounded-md transition duration-300 hover:bg-red-700 hover:scale-105">
-                Join Now
-              </button>
+          {/* Toggle */}
+          <div className="flex justify-center mb-14">
+            <div className="bg-white/5 border border-white/10 rounded-full p-1 flex gap-2">
+              {Object.keys(plans).map((key) => (
+                <button
+                  key={key}
+                  onClick={() => setDuration(key)}
+                  className={`px-4 py-2 rounded-full text-sm transition ${
+                    duration === key
+                      ? "bg-gradient-to-r from-red-500 to-orange-500 text-white"
+                      : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  {durationLabel[key]}
+                </button>
+              ))}
             </div>
-          ))}
+          </div>
 
+          {/* Cards */}
+          <div className="grid gap-8 md:grid-cols-3">
+            {currentPlans.map((plan, index) => {
+              const months =
+                duration === "monthly"
+                  ? 1
+                  : duration === "quarterly"
+                  ? 3
+                  : duration === "halfyearly"
+                  ? 6
+                  : 12;
+
+              const monthlyPrice = Math.round(plan.price / months);
+              const isSelected = plan.name === selectedPlan;
+
+              return (
+                <div
+                  key={index}
+                  className={`group relative rounded-2xl border p-8 flex flex-col h-full transition-all duration-300
+                  ${
+                    isSelected
+                      ? "bg-white/15 border-red-500 scale-[1.06] shadow-[0_0_25px_rgba(255,0,0,0.3)]"
+                      : "bg-white/5 border-white/10 hover:border-red-500/40 hover:bg-white/10"
+                  }`}
+                >
+                  {/* Badge */}
+                  {isSelected && (
+                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-red-500 to-orange-500 text-xs px-4 py-1 rounded-full">
+                      Recommended 🔥
+                    </span>
+                  )}
+
+                  {/* Content */}
+                  <div>
+                    <h3 className="text-xl font-semibold text-center">
+                      {plan.name}
+                    </h3>
+
+                    <div className="text-center mt-4">
+                      <span className="text-3xl font-bold">
+                        ₹{plan.price}
+                      </span>
+                      <p className="text-gray-400 text-sm">
+                        {durationLabel[duration]}
+                      </p>
+                    </div>
+
+                    <p className="text-center text-sm text-gray-400 mt-2">
+                      ₹{monthlyPrice}/month
+                    </p>
+
+                    {savings[duration] && (
+                      <p className="text-center text-green-400 text-xs mt-1">
+                        {savings[duration]}
+                      </p>
+                    )}
+
+                    <div className="my-6 h-[1px] bg-white/10"></div>
+
+                    <ul className="space-y-3 text-sm text-gray-300">
+                      {features[plan.name].map((item, i) => (
+                        <li key={i}>✔ {item}</li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* CTA */}
+                  <div className="mt-auto pt-8">
+                    <button
+                      onClick={() => setJoinOpen(true)}
+                      className="w-full relative overflow-hidden py-3 rounded-full font-semibold text-white group/btn"
+                    >
+                      <span className="absolute inset-0 bg-gradient-to-r from-red-500 to-orange-500"></span>
+                      <span className="absolute inset-0 opacity-0 group-hover/btn:opacity-100 bg-white/20 blur-lg transition"></span>
+                      <span className="relative z-10">
+                        Get Started →
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
+      </section>
 
-      </div>
-    </section>
+      <Joinclick isOpen={joinOpen} setIsOpen={setJoinOpen} />
+    </>
   );
 }
 

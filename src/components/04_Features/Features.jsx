@@ -1,66 +1,99 @@
+import {
+  FaUserTie,
+  FaDumbbell,
+  FaAppleAlt,
+  FaRobot,
+  FaClock,
+  FaHeartbeat,
+} from "react-icons/fa";
+
 function Features() {
   const features = [
     {
-      title: "Certified Trainers",
-      desc: "Our trainers ensure correct form, prevent injuries, and guide you step-by-step throughout your fitness journey.",
+      icon: FaUserTie,
+      title: "Expert Trainers",
+      desc: "Certified professionals to guide your transformation journey.",
+      highlight: true,
     },
     {
-      title: "Personalized Workout Plans",
-      desc: "Every individual gets a plan tailored to their body type, goals, and progress level.",
-    },
-    {
+      icon: FaDumbbell,
       title: "Modern Equipment",
-      desc: "We provide high-quality machines and tools to support all types of workouts effectively.",
+      desc: "Train with industry-grade machines and latest technology.",
     },
     {
-      title: "Flexible Training Hours",
-      desc: "Open gym hours allow you to train at your convenience without disrupting your schedule.",
+      icon: FaAppleAlt,
+      title: "Diet Plans",
+      desc: "Customized nutrition plans for faster and better results.",
+    },
+    {
+      icon: FaRobot,
+      title: "AI Workout Plan",
+      desc: "Smart AI-based suggestions tailored to your fitness goals.",
+    },
+    {
+      icon: FaClock,
+      title: "Flexible Timing",
+      desc: "Workout anytime with flexible and convenient schedules.",
+    },
+    {
+      icon: FaHeartbeat,
+      title: "Personalized Programs",
+      desc: "Programs designed specifically for your body and goals.",
     },
   ];
 
   return (
-    <section
-      id="features"
-      className="bg-gradient-to-b from-black via-gray-900 to-black text-white py-20 px-6"
-    >
-      <div className="max-w-6xl mx-auto">
+    <section className="bg-black text-white py-24 px-6 md:px-20">
+      
+      {/* Heading */}
+      <div className="text-center mb-16">
+        <h2 className="text-3xl md:text-5xl font-bold">
+          Why Choose <span className="text-red-500">FitZone</span>
+        </h2>
+        <p className="text-gray-400 mt-4 max-w-xl mx-auto">
+          Everything you need to achieve your fitness goals faster & smarter.
+        </p>
+      </div>
 
-        {/* Heading */}
-        <div className="mb-12 text-center">
-          <h2 className="text-3xl md:text-5xl font-bold">
-            Why Choose <span className="text-red-500">FitZone Gym</span>
-          </h2>
-          <p className="text-gray-400 mt-3 max-w-xl mx-auto">
-            We focus on building strength, discipline, and consistency — not just workouts.
-          </p>
-        </div>
+      {/* Grid */}
+      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {features.map((item, index) => {
+          const Icon = item.icon;
 
-        {/* Grid */}
-        <div className="grid gap-8 sm:grid-cols-2">
-
-          {features.map((item, i) => (
+          return (
             <div
-              key={i}
-              className="bg-gray-900/80 backdrop-blur-sm p-6 rounded-xl border border-gray-800 
-              transition duration-300 hover:scale-105 hover:border-red-500/40 hover:bg-gray-900 group"
+              key={index}
+              className={`group relative p-6 rounded-2xl border transition-all duration-300 ease-out
+              ${
+                item.highlight
+                  ? "bg-white/5 border-red-500/30"
+                  : "bg-white/5 border-white/10"
+              }
+              hover:scale-[1.03] hover:border-red-500/50 hover:bg-white/10`}
             >
+              {/* Glow (controlled + subtle) */}
+              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 bg-red-500/5 blur-xl transition duration-300"></div>
+
+              {/* Icon */}
+              <div className="w-12 h-12 flex items-center justify-center rounded-lg mb-4 bg-white/10 group-hover:bg-red-500/20 transition duration-300">
+                <Icon className="text-xl text-white group-hover:scale-110 transition duration-300" />
+              </div>
+
               {/* Title */}
-              <h3 className="text-lg font-semibold group-hover:text-red-400 transition">
+              <h3 className="text-lg font-semibold mb-2 group-hover:text-red-400 transition duration-300">
                 {item.title}
               </h3>
 
-              {/* Underline */}
-              <span className="block h-[2px] bg-red-500 w-0 group-hover:w-12 transition-all duration-300 mt-2"></span>
-
-              {/* Description */}
-              <p className="text-sm text-gray-400 mt-3">
+              {/* Desc */}
+              <p className="text-gray-400 text-sm leading-relaxed">
                 {item.desc}
               </p>
+
+              {/* Accent Line */}
+              <div className="mt-4 h-[2px] w-8 bg-red-500 transition-all duration-300 group-hover:w-16"></div>
             </div>
-          ))}
-
-        </div>
-
+          );
+        })}
       </div>
     </section>
   );

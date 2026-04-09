@@ -78,5 +78,5 @@ function Trainers() {
     </section>
   );
 }
-
+ 
 export default Trainers;
